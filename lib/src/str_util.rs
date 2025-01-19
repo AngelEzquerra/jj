@@ -83,12 +83,20 @@ impl StringPattern {
 
     /// Constructs a pattern that matches exactly.
     pub fn exact(src: impl Into<String>) -> Self {
-        StringPattern::Exact(src.into())
+        let mut input = src.into();
+        if !input.ends_with('\n') {
+            input.push('\n');
+        }
+        StringPattern::Exact(input)
     }
 
     /// Constructs a pattern that matches case‐insensitively.
     pub fn exact_i(src: impl Into<String>) -> Self {
-        StringPattern::ExactI(src.into())
+        let mut input = src.into();
+        if !input.ends_with('\n') {
+            input.push('\n');
+        }
+        StringPattern::ExactI(input)
     }
 
     /// Constructs a pattern that matches a substring.
