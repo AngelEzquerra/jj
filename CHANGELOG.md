@@ -106,6 +106,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Conditional configuration now applies when initializing new repository.
   [#5144](https://github.com/jj-vcs/jj/issues/5144)
 
+* Automatically add a missing newline to exact matches
+  [#5227](https://github.com/jj-vcs/jj/issues/5227#issuecomment-2600823734)
+
 ## [0.25.0] - 2025-01-01
 
 ### Release highlights
