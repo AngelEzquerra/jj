@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use itertools::Itertools;
 use std::io::Write as _;
 
 use clap_complete::ArgValueCandidates;
@@ -60,8 +61,19 @@ pub fn cmd_config_get(
             ConfigValue::Array(_) => {
                 Err("Expected a value convertible to a string, but is an array")
             }
-            ConfigValue::InlineTable(_) => {
-                Err("Expected a value convertible to a string, but is a table")
+            ConfigValue::InlineTable(table) => {
+                // Handle empty table
+                if table.is_empty() {
+                    return Ok(String::from(""));
+                }
+
+                // Format the key-value pairs as TOML lines.
+                let formatted_table_entries = table
+                    .iter()
+                    .map(|(key, value)| format!("{} = {}", key, value))
+                    .join("\n");
+
+                Ok(formatted_table_entries)
             }
         })?;
     writeln!(ui.stdout(), "{stringified}")?;
