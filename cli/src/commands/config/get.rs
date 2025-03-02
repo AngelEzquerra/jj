@@ -58,8 +58,15 @@ pub fn cmd_config_get(
             | ConfigValue::Boolean(_)
             | ConfigValue::Datetime(_) => Ok(value.decorated("", "").to_string()),
             // TODO: maybe okay to just print array or table in TOML syntax?
-            ConfigValue::Array(_) => {
-                Err("Expected a value convertible to a string, but is an array")
+            ConfigValue::Array(array) => {
+                if array.is_empty() {
+                    return Ok(String::from("[]")); // Print empty array
+                }
+                let formatted_array = array
+                    .iter()
+                    .map(|item| format!("{}", item)) // Convert each value to a string
+                    .join(", "); // Join with commas
+                Ok(format!("[{}]", formatted_array)) // Wrap in brackets for TOML syntax
             }
             ConfigValue::InlineTable(table) => {
                 // Handle empty table
